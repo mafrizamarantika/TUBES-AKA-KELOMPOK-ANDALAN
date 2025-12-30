@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Algoritma Pemilu</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+        <div class="globe globe-3"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <h1>Simulasi Perhitungan Suara Pemilu</h1>
+            <p class="subtitle">Analisis Kompleksitas Algoritma Iteratif vs Rekursif</p>
+        </header>
+
+        <section class="control-panel glass-panel">
+            <h2><span class="icon">⚙️</span> Konfigurasi Simulasi</h2>
+            <!-- Mode: Manual / Custom Only -->
+            <div id="controls-manual" class="controls-section">
+                <div class="control-group">
+                    <label for="manualInputType">Tipe Skema:</label>
+                    <select id="manualInputType" onchange="toggleManualInputDisplay()">
+                        <option value="generate">Random Generator (Custom Size & Paslon)</option>
+                        <option value="raw">Input Manual (Raw Data - Multi Paslon)</option>
+                    </select>
+                </div>
+
+                <div id="manual-raw-container" class="hidden">
+                    <div class="control-group">
+                        <label>Jumlah Paslon:</label>
+                        <input type="number" id="manualCandidateCount" value="2" min="1" max="10">
+                    </div>
+                    <div class="control-group">
+                        <label>Data Suara per TPS (Satu baris per TPS, pisahkan dengan spasi/koma):</label>
+                        <textarea id="manualDataInput" placeholder="Contoh untuk 2 paslon:
+10 20
+50 30
+100 45" rows="5"></textarea>
+                    </div>
+                </div>
+
+                <div id="manual-generate-container">
+                    <div class="input-row" style="display: flex; gap: 1rem;">
+                        <div class="control-group" style="flex: 1;">
+                            <label>Jumlah Data (N):</label>
+                            <input type="number" id="customSizeInput" value="1000" placeholder="Contoh: 5000" min="1"
+                                max="20000">
+                        </div>
+                        <div class="control-group" style="flex: 1;">
+                            <label>Jumlah Paslon:</label>
+                            <input type="number" id="customCandidateInput" value="3" min="1" max="10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <button id="runBtn" class="btn-primary">
+                    Jalankan Simulasi
+                </button>
+                <button id="resetBtn" class="btn-secondary" onclick="resetChart()">
+                    Reset Grafik
+                </button>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+            <section class="results-panel glass-panel">
+                <h2><span class="icon">📊</span> Hasil Perhitungan</h2>
+                <div id="statusMessage" class="status-placeholder">Klik "Jalankan Simulasi" untuk memulai</div>
+
+                <div class="stats-container hidden" id="statsContainer">
+                    <div class="stat-card">
+                        <h3>Total Suara (Iteratif)</h3>
+                        <p id="totalIterative" class="stat-value">-</p>
+                        <small id="timeIterative" class="stat-time">0.00 ms</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Suara (Rekursif)</h3>
+                        <p id="totalRecursive" class="stat-value">-</p>
+                        <small id="timeRecursive" class="stat-time">0.00 ms</small>
+                    </div>
+                </div>
+
+                <div class="table-wrapper hidden" id="tableWrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ukuran Data (N)</th>
+                                <th>Waktu Iteratif (ms)</th>
+                                <th>Waktu Rekursif (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="benchmarkTableBody">
+                            <!-- Rows generated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="chart-panel glass-panel">
+                <h2><span class="icon">📈</span> Grafik Kompleksitas Waktu</h2>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
